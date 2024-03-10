@@ -29,3 +29,18 @@ class BaseModel():
         """Return the print/str representation of the BaseModel instance."""
         clname = self.__class__.__name__
         return "[{}] ({}) {}".format(clname, self.id, self.__dict__)
+
+    def save(self):
+        """Updates the public instance attribute
+        updated_at with the current date and time"""
+        self.updated_at = datetime.now()
+        models.storage.save()
+
+    def to_dict(self):
+        """Returns a dictionary containing
+        all the __dict__ keys / values of the instance"""
+        my_dict = self.__dict__.copy()
+        my_dict.update({"__class__": self.__class__.__name__})
+        my_dict.update({"created_at": self.created_at.isoformat()})
+        my_dict.update({"updated_at": self.updated_at.isoformat()})
+        return (my_dict)
